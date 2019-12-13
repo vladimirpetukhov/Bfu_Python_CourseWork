@@ -1,2 +1,9 @@
 import tkinter as tk
-from tkinter import messagebox
+import startup
+
+
+root = tk.Tk();
+app = startup.Application(master=root)
+app.mainloop()
+
+
