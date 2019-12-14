@@ -1,5 +1,8 @@
 import tkinter as tk
+from tkinter import messagebox
 from IFactory import IFactory
+from services import Service
+from db import DbContext as db
 
 
 class Factory(IFactory):
@@ -8,10 +11,10 @@ class Factory(IFactory):
         self.master = master
 
     def create_widgets(self):
-         #Part
-        self.part_text=tk.StringVar()
-        self.part_label=self.part_label = tk.Label(
-        self.master, text='Part Name', font=('bold', 14), pady=20)
+         # Part
+        self.part_text = tk.StringVar()
+        self.part_label = self.part_label = tk.Label(
+            self.master, text='Part Name', font=('bold', 14), pady=20)
         self.part_label.grid(row=0, column=0, sticky=tk.W)
         self.part_entry = tk.Entry(self.master, textvariable=self.part_text)
         self.part_entry.grid(row=0, column=1)
@@ -51,3 +54,62 @@ class Factory(IFactory):
         # Set scrollbar to parts
         self.parts_list.configure(yscrollcommand=self.scrollbar.set)
         self.scrollbar.configure(command=self.parts_list.yview)
+
+        # Bind select
+        self.parts_list.bind('<<ListboxSelect>>', self.select_item)
+
+        # Buttons
+        self.add_btn = tk.Button(
+            self.master, text="Add Part", width=12)
+        self.add_btn.grid(row=2, column=0, pady=20)
+
+        self.remove_btn = tk.Button(
+            self.master, text="Remove Part", width=12)
+        self.remove_btn.grid(row=2, column=1)
+
+        self.update_btn = tk.Button(
+            self.master, text="Update Part", width=12)
+        self.update_btn.grid(row=2, column=2)
+
+        self.exit_btn = tk.Button(
+            self.master, text="Clear Input", width=12)
+        self.exit_btn.grid(row=2, column=3)
+
+        def add_item(self):
+            if self.part_text.get() == '' or self.customer_text.get() == '' or self.retailer_text.get() == '' or self.price_text.get() == '':
+                messagebox.showerror(
+                "Required Fields", "Please include all fields")
+            return
+        print(self.part_text.get())
+        # Insert into DB
+        db.insert(self.part_text.get(), self.customer_text.get(),
+                  self.retailer_text.get(), self.price_text.get())
+        # Clear list
+        self.parts_list.delete(0, tk.END)
+        # Insert into list
+        self.parts_list.insert(tk.END, (self.part_text.get(), self.customer_text.get(
+        ), self.retailer_text.get(), self.price_text.get()))
+        self.clear_text()
+        self.populate_list()
+
+    def select_item(self, event):
+            # # Create global selected item to use in other functions
+        # global self.selected_item
+        try:
+            # Get index
+            index = self.parts_list.curselection()[0]
+            # Get selected item
+            self.selected_item = self.parts_list.get(index)
+            # print(selected_item) # Print tuple
+
+            # Add text to entries
+            self.part_entry.delete(0, tk.END)
+            self.part_entry.insert(tk.END, self.selected_item[1])
+            self.customer_entry.delete(0, tk.END)
+            self.customer_entry.insert(tk.END, self.selected_item[2])
+            self.retailer_entry.delete(0, tk.END)
+            self.retailer_entry.insert(tk.END, self.selected_item[3])
+            self.price_entry.delete(0, tk.END)
+            self.price_entry.insert(tk.END, self.selected_item[4])
+        except IndexError:
+            pass
