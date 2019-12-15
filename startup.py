@@ -15,6 +15,7 @@ class Application(tk.Frame):
         # Create widgets/grid
         self.factory = Factory(self.master,self.db)
         self.factory.create_widgets()
+        self.factory.populate_list()
         #Services
         
 

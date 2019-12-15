@@ -10,6 +10,11 @@ class Factory(IFactory):
         super().__init__(master, db)
         self.master = master
         self.db=db
+        self.create_widgets()
+        self.select_item=0
+        self.populate_list()
+        
+
 
     def create_widgets(self):
          # Part
@@ -61,7 +66,7 @@ class Factory(IFactory):
 
         # Buttons
         self.add_btn = tk.Button(
-            self.master, text="Add", width=12)
+            self.master, text="Add", width=12,command=self.add_item)
         self.add_btn.grid(row=2, column=0, pady=20)
 
         self.remove_btn = tk.Button(
@@ -76,34 +81,41 @@ class Factory(IFactory):
             self.master, text="Cansel", width=12, command=self.clear_text)
         self.exit_btn.grid(row=2, column=3)
 
-        def add_item(self):
+
+        
+    def add_item(self):           
             if self.part_text.get() == '' or self.customer_text.get() == '' or self.retailer_text.get() == '' or self.price_text.get() == '':
                 messagebox.showerror(
                     "Required Fields", "Please include all fields")
-            return
-        print(self.part_text.get())
-        # Insert into DB
-        # db.insert(self.part_text.get(), self.customer_text.get(),
-        #           self.retailer_text.get(), '0')
-        # Clear list
-        self.parts_list.delete(0, tk.END)
-        # Insert into list
-        self.parts_list.insert(tk.END, (self.part_text.get(), self.customer_text.get(
-        ), self.retailer_text.get(), self.price_text.get()))
-        print(self.price_text.get())
-        self.clear_text()
-        self.populate_list()
+                return            
+            print(self.part_text.get())
+
+            messagebox.showerror(
+                self.part_text.get(),self.customer_text.get()
+                        )
+            # Insert into DB
+            db.insert(self.db,self.part_text.get(), self.customer_text.get(),
+                      self.retailer_text.get(), self.price_text.get())
+            # Clear list
+            self.parts_list.delete(0, tk.END)
+            # Insert into list
+            self.parts_list.insert(tk.END, (self.part_text.get(), self.customer_text.get(
+            ), self.retailer_text.get(), self.price_text.get()))
+            print(self.price_text.get())
+            self.clear_text()
+            self.populate_list()
+
 
     def select_item(self, event):
             # Create global selected item to use in other functions
-        # global self.selected_item
+        self.selected_item   
         try:
             # Get index
             index = self.parts_list.curselection()[0]
             # Get selected item
             self.selected_item = self.parts_list.get(index)
-            print(selected_item) # Print tuple
-
+            print(selected_item) 
+            
             # Add text to entries
             self.part_entry.delete(0, tk.END)
             self.part_entry.insert(tk.END, self.selected_item[1])
