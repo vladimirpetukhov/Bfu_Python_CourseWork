@@ -6,8 +6,8 @@ from db import DbContext as db
 
 
 class Factory(IFactory):
-    def __init__(self, master,db):
-        super().__init__(master,db)
+    def __init__(self, master, db):
+        super().__init__(master, db)
         self.master = master
 
     def create_widgets(self):
@@ -60,25 +60,25 @@ class Factory(IFactory):
 
         # Buttons
         self.add_btn = tk.Button(
-            self.master, text="Add Part", width=12)
+            self.master, text="Add", width=12)
         self.add_btn.grid(row=2, column=0, pady=20)
 
         self.remove_btn = tk.Button(
-            self.master, text="Remove Part", width=12)
+            self.master, text="Remove", width=12)
         self.remove_btn.grid(row=2, column=1)
 
         self.update_btn = tk.Button(
-            self.master, text="Update Part", width=12)
+            self.master, text="Update", width=12)
         self.update_btn.grid(row=2, column=2)
-
+        # Clear Input Fields
         self.exit_btn = tk.Button(
-            self.master, text="Clear Input", width=12)
+            self.master, text="Cansel", width=12, command=self.clear_text)
         self.exit_btn.grid(row=2, column=3)
 
         def add_item(self):
             if self.part_text.get() == '' or self.customer_text.get() == '' or self.retailer_text.get() == '' or self.price_text.get() == '':
                 messagebox.showerror(
-                "Required Fields", "Please include all fields")
+                    "Required Fields", "Please include all fields")
             return
         print(self.part_text.get())
         # Insert into DB
@@ -101,7 +101,7 @@ class Factory(IFactory):
             index = self.parts_list.curselection()[0]
             # Get selected item
             self.selected_item = self.parts_list.get(index)
-            # print(selected_item) # Print tuple
+            print(selected_item) # Print tuple
 
             # Add text to entries
             self.part_entry.delete(0, tk.END)
@@ -114,3 +114,10 @@ class Factory(IFactory):
             self.price_entry.insert(tk.END, self.selected_item[4])
         except IndexError:
             pass
+
+    # Clear all text fields
+    def clear_text(self):
+        self.part_entry.delete(0, tk.END)
+        self.customer_entry.delete(0, tk.END)
+        self.retailer_entry.delete(0, tk.END)
+        self.price_entry.delete(0, tk.END)
