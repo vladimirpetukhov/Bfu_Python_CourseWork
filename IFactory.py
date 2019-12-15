@@ -2,7 +2,7 @@
 
 
 class IFactory:
-    def __init__(self,master):
+    def __init__(self,master,db):
           self.master=master
       
 

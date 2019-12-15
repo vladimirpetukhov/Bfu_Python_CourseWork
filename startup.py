@@ -13,8 +13,8 @@ class Application(tk.Frame):
         # Width height
         master.geometry("700x350")
         # Create widgets/grid
-        factory = Factory(self.master)
-        factory.create_widgets()
+        self.factory = Factory(self.master,self.db)
+        self.factory.create_widgets()
         #Services
-        service=Service(factory)
+        
 

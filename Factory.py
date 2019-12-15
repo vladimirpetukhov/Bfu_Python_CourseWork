@@ -6,8 +6,8 @@ from db import DbContext as db
 
 
 class Factory(IFactory):
-    def __init__(self, master):
-        super().__init__(master)
+    def __init__(self, master,db):
+        super().__init__(master,db)
         self.master = master
 
     def create_widgets(self):
@@ -82,18 +82,19 @@ class Factory(IFactory):
             return
         print(self.part_text.get())
         # Insert into DB
-        db.insert(self.part_text.get(), self.customer_text.get(),
-                  self.retailer_text.get(), self.price_text.get())
+        # db.insert(self.part_text.get(), self.customer_text.get(),
+        #           self.retailer_text.get(), '0')
         # Clear list
         self.parts_list.delete(0, tk.END)
         # Insert into list
         self.parts_list.insert(tk.END, (self.part_text.get(), self.customer_text.get(
         ), self.retailer_text.get(), self.price_text.get()))
+        print(self.price_text.get())
         self.clear_text()
-        self.populate_list()
+        # self.populate_list()
 
     def select_item(self, event):
-            # # Create global selected item to use in other functions
+            # Create global selected item to use in other functions
         # global self.selected_item
         try:
             # Get index
