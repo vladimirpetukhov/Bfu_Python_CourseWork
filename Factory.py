@@ -9,6 +9,7 @@ class Factory(IFactory):
     def __init__(self, master, db):
         super().__init__(master, db)
         self.master = master
+        self.db=db
 
     def create_widgets(self):
          # Part
@@ -56,7 +57,7 @@ class Factory(IFactory):
         self.scrollbar.configure(command=self.parts_list.yview)
 
         # Bind select
-        self.parts_list.bind('<<ListboxSelect>>', self.select_item)
+        self.parts_list.bind(('<<ListboxSelect>>', self.select_item))
 
         # Buttons
         self.add_btn = tk.Button(
@@ -91,7 +92,7 @@ class Factory(IFactory):
         ), self.retailer_text.get(), self.price_text.get()))
         print(self.price_text.get())
         self.clear_text()
-        # self.populate_list()
+        self.populate_list()
 
     def select_item(self, event):
             # Create global selected item to use in other functions
@@ -121,3 +122,12 @@ class Factory(IFactory):
         self.customer_entry.delete(0, tk.END)
         self.retailer_entry.delete(0, tk.END)
         self.price_entry.delete(0, tk.END)
+
+    # Populate textbox
+    def populate_list(self): 
+        # Delete items before update.
+        self.parts_list.delete(0, tk.END)
+        # Loop through records
+        for row in db.fetch(self.db):
+            # Insert into list
+            self.parts_list.insert(tk.END, row)
