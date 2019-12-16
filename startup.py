@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+
 from Factory import Factory
 from db import DbContext
 import pprint
