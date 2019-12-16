@@ -1,7 +1,5 @@
 import tkinter as tk
 from tkinter import messagebox
-
-from Factory import Factory
 from db import DbContext
 import pprint
 
@@ -12,8 +10,7 @@ class Application(tk.Frame):
         self.master = master
         self.db = DbContext()
         master.title('Manager')
-        # Width height
-        master.geometry("700x450")
+        master.geometry("900x600")
         # Create widgets/grid
         self.create_widgets()
         # Init selected item var
@@ -26,7 +23,7 @@ class Application(tk.Frame):
         self.part_text = tk.StringVar()
         self.part_label = tk.Label(
         self.master, text='Part Name', font=('bold', 14), pady=20)
-        self.part_label.grid(row=0, column=0, sticky=tk.W)
+        self.part_label.grid(row=0, column=0, sticky=tk.W, pady=20)
         self.part_entry = tk.Entry(self.master, textvariable=self.part_text)
         self.part_entry.grid(row=0, column=1)
         # Customer
