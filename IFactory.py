@@ -10,6 +10,7 @@ class IFactory:
     def __init__(self, master, db,selected_item=0):
         self.master = master
         self.selected_item=selected_item
+        self.part=None
         
 
 
@@ -100,10 +101,16 @@ class IFactory:
     
     def select_item(self):
         # # Create global selected item to use in other functions
-       
+            
+            
             # # Get index
             if len(self.parts_list.curselection()) > 0:
                 self.selected_item = self.parts_list.curselection()
+                
+                self.part=self.get_part_by_id()
+                pprint(self.part)
+
+
             
             # # Add text to entries
             # self.part_entry.delete(0, tk.END)
@@ -143,3 +150,8 @@ class IFactory:
         for row in db.fetch(self.db):
             # Insert into list
             self.parts_list.insert(tk.END, row)
+
+
+    def get_part_by_id(self):
+        p=self.db.get_part(self.selected_item[0])
+        pass
