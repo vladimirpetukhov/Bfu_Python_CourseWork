@@ -3,11 +3,14 @@ from tkinter import messagebox
 from services import Service
 from db import DbContext as db
 
+from pprint import pprint
+
 
 class IFactory:
     def __init__(self, master, db,selected_item=0):
         self.master = master
-        self.selected_iem=selected_item
+        self.selected_item=selected_item
+        
 
 
     def create_widgets(self):
@@ -45,7 +48,7 @@ class IFactory:
         self.price_entry.grid(row=1, column=3)
 
         # Parts list (listbox)
-        self.parts_list = tk.Listbox(self.master, height=8, width=50, border=0)
+        self.parts_list = tk.Listbox(self.master, height=8, width=50, border=0, selectmode='SINGLE ')
         self.parts_list.grid(row=4, column=0, columnspan=4,
                              rowspan=6, pady=20, padx=20)
         # Create scrollbar
@@ -54,9 +57,6 @@ class IFactory:
         # Set scrollbar to parts
         self.parts_list.configure(yscrollcommand=self.scrollbar.set)
         self.scrollbar.configure(command=self.parts_list.yview)
-
-        # Bind select
-        self.parts_list.bind(("<Double-Button-1>", self.select_item))
         
 
         # Buttons
@@ -78,7 +78,7 @@ class IFactory:
 
 
     def add_item(self):
-        self.selected_iem=0
+        self.selected_item = 0
         if self.part_text.get() == '' or self.customer_text.get() == '' or self.retailer_text.get() == '' or self.price_text.get() == '':
             messagebox.showerror(
                 "Required Fields", "Please include all fields")
@@ -98,17 +98,13 @@ class IFactory:
         self.populate_list()
 
     
-    def select_item(self, event):
+    def select_item(self):
         # # Create global selected item to use in other functions
        
-             print('Im in')
-             messagebox.showinfo('knlkjmnbjbhv')
             # # Get index
-            # index = self.parts_list.curselection()[0]
-            # # Get selected item
-            # self.selected_item = self.parts_list.get(index)
+            if len(self.parts_list.curselection()) > 0:
+                self.selected_item = self.parts_list.curselection()
             
-
             # # Add text to entries
             # self.part_entry.delete(0, tk.END)
             # self.part_entry.insert(tk.END, self.selected_item[1])
@@ -124,7 +120,9 @@ class IFactory:
 
     # Remove item
     def remove_item(self):
-        db.remove(self.selected_item[0])
+        self.select_item()
+        print(self.selected_item)
+        db.remove(self.db, int(self.selected_item[0]))
         self.clear_text()
         self.populate_list()
 

@@ -10,5 +10,7 @@ class Factory(IFactory):
         super().__init__(master, db,selected_item=0)
         self.master = master
         self.db=db
+
+        
         
 
