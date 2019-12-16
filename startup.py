@@ -99,7 +99,7 @@ class Application(tk.Frame):
             return
         print(self.part_text.get())
         # Insert into DB
-        db.insert(self.part_text.get(), self.customer_text.get(),
+        self.db.insert(self.part_text.get(), self.customer_text.get(),
                   self.retailer_text.get(), self.price_text.get())
         # Clear list
         self.parts_list.delete(0, tk.END)
@@ -134,13 +134,13 @@ class Application(tk.Frame):
 
     # Remove item
     def remove_item(self):
-        db.remove(self.selected_item[0])
+        self.db.remove(self.selected_item[0])
         self.clear_text()
         self.populate_list()
 
     # Update item
     def update_item(self):
-        db.update(self.selected_item[0], self.part_text.get(
+        self.db.update(self.selected_item[0], self.part_text.get(
         ), self.customer_text.get(), self.retailer_text.get(), self.price_text.get())
         self.populate_list()
 
