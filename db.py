@@ -21,6 +21,11 @@ class DbContext:
         return rows
 
 
+    def remove(self, id):
+        self.cur.execute("DELETE FROM parts WHERE id=?", (id,))
+        self.conn.commit()
+
+
 
 
 # db = DbContext()

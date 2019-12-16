@@ -9,12 +9,12 @@ class Application(tk.Frame):
         super().__init__(master)
         self.master = master
         self.db=DbContext()
-        master.title('Part Manager')
+        master.title('Manager')
         # Width height
-        master.geometry("700x350")
+        master.geometry("700x450")
         # Create widgets/grid
         self.factory = Factory(self.master,self.db)
-        self.factory.create_widgets()
+        self.factory.create_widgets()      
         self.factory.populate_list()
         #Services
         
