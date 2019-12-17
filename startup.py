@@ -9,6 +9,7 @@ class Application(tk.Frame):
         super().__init__(master)
         self.master = master
         self.db = DbContext()
+        
         master.title('Manager')
         master.geometry("900x600")
         # Create widgets/grid
@@ -19,6 +20,7 @@ class Application(tk.Frame):
         self.populate_list()
 
     def create_widgets(self):
+
         # Part
         self.part_text = tk.StringVar()
         self.part_label = tk.Label(
@@ -37,7 +39,7 @@ class Application(tk.Frame):
         # Retailer
         self.retailer_text = tk.StringVar()
         self.retailer_label = tk.Label(
-            self.master, text='Retailer', font=('bold', 14))
+            self.master, text='Manufacturer', font=('bold', 14))
         self.retailer_label.grid(row=1, column=0, sticky=tk.W)
         self.retailer_entry = tk.Entry(
             self.master, textvariable=self.retailer_text)
@@ -108,9 +110,7 @@ class Application(tk.Frame):
         self.populate_list()
 
     # Runs when item is selected
-    def select_item(self, event):
-        # # Create global selected item to use in other functions
-        # global self.selected_item
+    def select_item(self, event):        
         try:
             # Get index
             index = self.parts_list.curselection()[0]
@@ -132,12 +132,20 @@ class Application(tk.Frame):
 
     # Remove item
     def remove_item(self):
+        if self.part_text.get() == '' or self.customer_text.get() == '' or self.retailer_text.get() == '' or self.price_text.get() == '':
+            messagebox.showerror(
+                "Required Fields", "Nothing to Remove!")
+            return
         self.db.remove(self.selected_item[0])
         self.clear_text()
         self.populate_list()
 
     # Update item
     def update_item(self):
+        if self.part_text.get() == '' or self.customer_text.get() == '' or self.retailer_text.get() == '' or self.price_text.get() == '':
+            messagebox.showerror(
+                "Required Fields", "Nothing to update!")
+            return
         self.db.update(self.selected_item[0], self.part_text.get(
         ), self.customer_text.get(), self.retailer_text.get(), self.price_text.get())
         self.populate_list()
